@@ -1,0 +1,15 @@
+{application, zlist,
+ [{description, "Erlang lazy list library"},
+  {vsn, git},
+  {registered, []},
+  {applications,
+   [kernel,
+    stdlib
+   ]},
+  {env,[]},
+  {modules, []},
+
+  {maintainers, ["Yakov Kozlov"]},
+  {licenses, ["MIT"]},
+  {links, [{"Github", "https://github.com/egobrain/zlist"}]}
+ ]}.

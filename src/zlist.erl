@@ -21,6 +21,7 @@
          fold/3,
          take/2,
          takewhile/2,
+         take_by/2,
 
          from_list/1,
          to_list/1
@@ -243,4 +244,13 @@ takewhile_(Fun, Acc, Z) ->
                 false -> {lists:reverse(Acc), fun() -> R end}
             end;
         _Done -> {lists:reverse(Acc), empty()}
+    end.
+
+-spec take_by(N :: pos_integer(), zlist(A)) -> zlist([A]).
+take_by(N, Zlist) when N > 0 ->
+    fun() ->
+        case take(N, Zlist) of
+            {[], EmptyZ} -> EmptyZ;
+            {List, RestZ} -> [List] ++ take_by(N, RestZ)
+        end
     end.

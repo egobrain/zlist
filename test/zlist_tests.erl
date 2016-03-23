@@ -199,3 +199,9 @@ ciclyc_test() ->
     Z2 = zlist:ciclyc(Z),
     {R, _} = zlist:take(10, Z2),
     ?assertEqual([1,2,3,1,2,3,1,2,3,1], R).
+
+take_by_test() ->
+    ?assertEqual([[1,2,3],[4,5,6],[7,8]], zlist:to_list(zlist:take_by(3, zlist:seq(1,8)))),
+    ?assertEqual([], zlist:to_list(zlist:take_by(3, zlist:empty()))),
+    ?assertEqual([[1],[2],[3]], zlist:to_list(zlist:take_by(1, zlist:seq(1,3)))),
+    ?assertEqual([[1,2,3]], zlist:to_list(zlist:take_by(4, zlist:seq(1,3)))).

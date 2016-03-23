@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/egobrain/zlist.png?branch=master)](https://travis-ci.org/egobrain/zlist.png?branch=master)
+
 # Erlang zlist: a lazy sequences library.
 ----------------------------------------------------
 

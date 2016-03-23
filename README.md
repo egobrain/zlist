@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/egobrain/zlist.png?branch=master)](https://travis-ci.org/egobrain/zlist.png?branch=master)
+[![GitHub tag](https://img.shields.io/github/tag/egobrain/zlist.svg)](https://github.com/egobrain/zlist)
+[![Hex.pm](https://img.shields.io/hexpm/v/zlist.svg)](https://hex.pm/packages/zlist)
 
 # Erlang zlist: a lazy sequences library.
 ----------------------------------------------------

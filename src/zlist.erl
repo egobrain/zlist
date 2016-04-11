@@ -250,7 +250,7 @@ takewhile_(Fun, Acc, Z) ->
 take_by(N, Zlist) when N > 0 ->
     fun() ->
         case take(N, Zlist) of
-            {[], EmptyZ} -> EmptyZ;
+            {[], EmptyZ} -> EmptyZ();
             {List, RestZ} -> [List] ++ take_by(N, RestZ)
         end
     end.

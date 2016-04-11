@@ -204,4 +204,8 @@ take_by_test() ->
     ?assertEqual([[1,2,3],[4,5,6],[7,8]], zlist:to_list(zlist:take_by(3, zlist:seq(1,8)))),
     ?assertEqual([], zlist:to_list(zlist:take_by(3, zlist:empty()))),
     ?assertEqual([[1],[2],[3]], zlist:to_list(zlist:take_by(1, zlist:seq(1,3)))),
-    ?assertEqual([[1,2,3]], zlist:to_list(zlist:take_by(4, zlist:seq(1,3)))).
+    ?assertEqual([[1,2,3]], zlist:to_list(zlist:take_by(4, zlist:seq(1,3)))),
+    ZSeq = zlist:seq(1, 30),
+    GroupedZ = zlist:take_by(100, ZSeq),
+    [_|RestZ] = GroupedZ(),
+    ?assertEqual([], RestZ()).

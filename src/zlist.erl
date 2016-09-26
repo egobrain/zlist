@@ -100,31 +100,28 @@ foreach(Fun, Zlist) ->
 -spec filter(fun((A) -> boolean()), zlist(A)) -> zlist(A).
 filter(Fun, Zlist) ->
     fun() ->
-        (fun Loop(Z) ->
-             case Z() of
-                 [Data|Next] ->
-                     case Fun(Data) of
-                         true -> [Data] ++ filter(Fun, Next);
-                         false -> Loop(Next)
-                     end;
-                 Done -> Done
-             end
-         end)(Zlist)
+        case Zlist() of
+            [Data|Next] ->
+                case Fun(Data) of
+                    true -> [Data] ++ filter(Fun, Next);
+                    false -> (filter(Fun, Next))()
+                end;
+            Done -> Done
+        end
     end.
+
 
 -spec filtermap(fun((A) -> {true, B} | false), zlist(A)) -> zlist(B).
 filtermap(Fun, Zlist) ->
     fun() ->
-        (fun Loop(Z) ->
-             case Z() of
-                 [Data|Next] ->
-                     case Fun(Data) of
-                         {true, Data2} -> [Data2] ++ filtermap(Fun, Next);
-                         false -> Loop(Next)
-                     end;
-                 Done -> Done
-             end
-         end)(Zlist)
+        case Zlist() of
+            [Data|Next] ->
+                case Fun(Data) of
+                    {true, Data2} -> [Data2] ++ filtermap(Fun, Next);
+                    false -> (filtermap(Fun, Next))()
+                end;
+            Done -> Done
+        end
     end.
 
 -spec fold(fun((A, S) -> S), S, zlist(A)) -> S.
@@ -172,17 +169,14 @@ dropwhen(Fun, Zlist) ->
 -spec dropwhile(fun((A) -> boolean()), zlist(A)) -> zlist(A).
 dropwhile(Fun, Zlist) ->
     fun() ->
-        (fun Loop(Z) ->
-             case Z() of
-                 [Data|Next]=R ->
-                     case Fun(Data) of
-                         true -> Loop(Next);
-                         false -> R
-                     end;
-                 Done -> Done
-
-             end
-         end)(Zlist)
+        case Zlist() of
+            [Data|Next]=R ->
+                case Fun(Data) of
+                    true -> (dropwhile(Fun, Next))();
+                    false -> R
+                end;
+            Done -> Done
+        end
     end.
 
 -spec append(zlist(A), zlist(B)) -> zlist(A|B).

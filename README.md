@@ -69,5 +69,5 @@ to this git repo at your rebar.config.
 
 With zlist you are working with potentially infinite data.
 Don't use ```to_list/1```, ```foreach/2```, ```fold/3``` functions
-until you know that iterator is finite state.
+until you know that zlist is finite state.
 Use ```dropwhen/1``` before, or ```take/2``` instead.

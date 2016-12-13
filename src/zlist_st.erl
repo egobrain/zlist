@@ -196,8 +196,8 @@ from_list(List) ->
 
 -spec to_list(zlist_st(A, St), St) -> {[A], St}.
 to_list(Zlist, St) ->
-    {List, St} = fold(fun(H, T) -> [H|T] end, [], Zlist, St),
-    {lists:reverse(List), St}.
+    {List, St2} = fold(fun(H, T) -> [H|T] end, [], Zlist, St),
+    {lists:reverse(List), St2}.
 
 -spec recurrent(fun((A) -> A), A) -> zlist_st(A, St :: any()).
 recurrent(Fun, S) ->

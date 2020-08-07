@@ -24,7 +24,9 @@
          take_by/2,
 
          from_list/1,
-         to_list/1
+         to_list/1,
+
+         table/1
         ]).
 
 -type zlist(A) :: fun(() -> maybe_improper_list(A, zlist(A))) | empty_zlist().
@@ -248,3 +250,6 @@ take_by(N, Zlist) when N > 0 ->
             {List, RestZ} -> [List] ++ take_by(N, RestZ)
         end
     end.
+
+table(Zs) ->
+    qlc:table(Zs, []).

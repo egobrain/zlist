@@ -209,3 +209,15 @@ take_by_test() ->
     GroupedZ = zlist:take_by(100, ZSeq),
     [_|RestZ] = GroupedZ(),
     ?assertEqual([], RestZ()).
+
+-include_lib("stdlib/include/qlc.hrl").
+qlc_test() ->
+    Zs = zlist:seq(1, 20),
+    Q1 = qlc:q([{C,B,A} || A <- zlist:table(Zs), B <- zlist:table(Zs), C <- zlist:table(Zs),
+                           A =< B, A*A + B*B == C*C]),
+    Q2 = qlc:sort(Q1, [{order, descending}]),
+    Cursor = qlc:cursor(Q2),
+    ?assertEqual([{20,16,12},{17,15,8}], qlc:next_answers(Cursor, 2)),
+    ?assertEqual([{15,12,9}, {13,12,5},{10,8,6},{5,4,3}], qlc:next_answers(Cursor, 5)), %only 4 available
+    ?assertEqual([], qlc:next_answers(Cursor, 1)), %no answers
+    ok = qlc:delete_cursor(Cursor).

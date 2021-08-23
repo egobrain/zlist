@@ -32,8 +32,18 @@
             {maybe_improper_list(A, zlist_st(A, St)), St} |
             {[], St}
         ).
+-type empty_zlist_st(St) :: fun((St) -> {[], St}).
 
--spec empty() -> fun((St) -> {[], St}).
+-export_type([
+    zlist_st/2,
+    empty_zlist_st/1
+]).
+
+%% =============================================================================
+%% API functions
+%% =============================================================================
+
+-spec empty() -> empty_zlist_st(St :: any()).
 empty() ->
     fun(R) -> {[], R} end.
 

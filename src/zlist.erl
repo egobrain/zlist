@@ -24,7 +24,9 @@
          take_by/2,
 
          from_list/1,
-         to_list/1
+         to_list/1,
+
+         from_ets/2
         ]).
 
 -type zlist(A) :: fun(() -> maybe_improper_list(A, zlist(A))) | empty_zlist().
@@ -211,6 +213,13 @@ from_list(List) ->
 -spec to_list(zlist(A)) -> [A].
 to_list(Zlist) -> lists:reverse(fold(fun(H, T) -> [H|T] end, [], Zlist)).
 
+%% Be careful with resulted zlist: do not reuse it after a table was unfixed.
+%% Consider to use an unsafe ordered_set.
+-spec from_ets(ets:tid(), boolean()) -> zlist(tuple()).
+from_ets(T, Safe) ->
+    Safe andalso ets:safe_fixtable(T, true),
+    from_ets(T, ets:first(T), Safe).
+
 -spec recurrent(fun((A) -> A), A) -> zlist(A).
 recurrent(Fun, S) ->
     fun() ->
@@ -246,5 +255,27 @@ take_by(N, Zlist) when N > 0 ->
         case take(N, Zlist) of
             {[], EmptyZ} -> EmptyZ();
             {List, RestZ} -> [List] ++ take_by(N, RestZ)
+        end
+    end.
+
+%% =============================================================================
+%% Internal functions
+%% =============================================================================
+
+-spec from_ets(ets:tid(), term(), boolean()) -> zlist(tuple()).
+from_ets(T, Key, Safe) ->
+    fun() ->
+        case Key of
+            '$end_of_table' ->
+                Safe andalso ets:safe_fixtable(T, false),
+                [];
+            _ ->
+                Next = ets:next(T, Key),
+                case ets:lookup(T, Key) of
+                    [] -> % a key was deleted
+                        (from_ets(T, Next, Safe))();
+                    Objects ->
+                        Objects ++ from_ets(T, Next, Safe)
+                end
         end
     end.

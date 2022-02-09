@@ -209,3 +209,15 @@ take_by_test() ->
     GroupedZ = zlist:take_by(100, ZSeq),
     [_|RestZ] = GroupedZ(),
     ?assertEqual([], RestZ()).
+
+from_ets_test() ->
+    T = ets:new(from_ets_test, [ordered_set]),
+    true = ets:insert(T, [{1, a}, {2, b}, {3, c}]),
+    ZEts0 = zlist:from_ets(T, true),
+    ?assertNotEqual(false, ets:info(T, safe_fixed)),
+    {[A], ZEts1} = zlist:take(1, ZEts0),
+    ?assertEqual({1, a}, A),
+    true = ets:delete(T, 2),
+    ?assertEqual([{3, c}], zlist:to_list(ZEts1)),
+    ?assertEqual(false, ets:info(T, safe_fixed)),
+    true = ets:delete(T).

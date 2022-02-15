@@ -215,7 +215,7 @@ to_list(Zlist) -> lists:reverse(fold(fun(H, T) -> [H|T] end, [], Zlist)).
 
 %% Be careful with resulted zlist: do not reuse it after a table was unfixed.
 %% Consider to use an unsafe ordered_set.
--spec from_ets(ets:tid(), boolean()) -> zlist(tuple()).
+-spec from_ets(ets:tab(), boolean()) -> zlist(tuple()).
 from_ets(T, Safe) ->
     Safe andalso ets:safe_fixtable(T, true),
     from_ets(T, ets:first(T), Safe).
@@ -262,7 +262,7 @@ take_by(N, Zlist) when N > 0 ->
 %% Internal functions
 %% =============================================================================
 
--spec from_ets(ets:tid(), term(), boolean()) -> zlist(tuple()).
+-spec from_ets(ets:tab(), term(), boolean()) -> zlist(tuple()).
 from_ets(T, Key, Safe) ->
     fun() ->
         case Key of

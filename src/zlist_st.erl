@@ -175,7 +175,7 @@ dropwhile(Fun, ZlistSt) ->
     end.
 
 
--spec append(zlist_st(A, St), zlist_st(B, St)) -> zlist_st(A|B, St).
+-spec append(zlist_st(A, St), zlist_st(A, St)) -> zlist_st(A, St).
 append(Zlist1, Zlist2) ->
     fun(St) ->
         case Zlist1(St) of

@@ -29,7 +29,7 @@
          from_ets/2
         ]).
 
--type zlist(A) :: fun(() -> maybe_improper_list(A, zlist(A))) | empty_zlist().
+-type zlist(A) :: fun(() -> maybe_improper_list(A, zlist(A))).
 -type empty_zlist() :: fun(() -> []).
 
 -export_type([
